@@ -1,0 +1,14 @@
+services:
+  api:
+    container_name: ${API_CONTAINER}-dev
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "${API_PORT}:3000"
+    volumes:
+      - .:/app
+      - /app/tmp
