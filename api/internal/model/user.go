@@ -1,8 +1,8 @@
 package model
 
 type User struct {
-	ID       int    `json:"id"`
+	GormModel
 	Username string `json:"username"`
-	Email    string `json:"email"`
+	Email    string `gorm:"unique" json:"email"`
 	Password string `json:"password"`
 }

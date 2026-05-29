@@ -10,7 +10,7 @@ services:
     ports:
       - "${API_PORT}:3000"
     volumes:
-      - .:/app
+      - ./api:/app
       - /app/tmp
 
   web:
@@ -55,6 +55,9 @@ services:
       - "${PGADMIN_PORT}:80"
     depends_on:
       - db
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
 
 volumes:
   postgres_data:
+  pgadmin_data:
