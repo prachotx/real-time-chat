@@ -61,6 +61,7 @@ func (s *authService) FindProfile(userID uint) (dto.UserResponse, error) {
 	if err != nil {
 		return dto.UserResponse{}, err
 	}
+
 	return dto.UserResponse{
 		ID:       user.ID,
 		Username: user.Username,

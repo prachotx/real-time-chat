@@ -40,7 +40,7 @@ func main() {
 		panic("failed to connect database")
 	}
 
-	db.AutoMigrate(&model.User{})
+	db.AutoMigrate(&model.User{}, &model.Room{})
 
 	app := fiber.New(fiber.Config{
 		StructValidator: &structValidator{validate: validator.New()},
@@ -51,6 +51,10 @@ func main() {
 	authService := service.NewAuthService(userRepo)
 	authHandler := handler.NewAuthHandler(authService)
 
+	roomRepo := repository.NewRoomRepository(db)
+	roomService := service.NewRoomService(roomRepo)
+	roomHandler := handler.NewRoomHandler(roomService)
+
 	api := app.Group("/api")
 	{
 		auth := api.Group("/auth")
@@ -58,6 +62,12 @@ func main() {
 			auth.Post("/login", authHandler.Login)
 			auth.Post("/register", authHandler.Register)
 			auth.Get("/me", middleware.AuthMiddleware, authHandler.Profile)
+		}
+		room := api.Group("/rooms")
+		{
+			room.Post("/", middleware.AuthMiddleware, roomHandler.Create)
+			room.Get("/", middleware.AuthMiddleware, roomHandler.FindAll)
+			room.Get("/:id", middleware.AuthMiddleware, roomHandler.FindByID)
 		}
 	}
 
