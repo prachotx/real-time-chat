@@ -8,7 +8,6 @@ import (
 type RoomRepository interface {
 	Create(room *model.Room) error
 	FindAll() ([]model.Room, error)
-	FindByID(id uint) (model.Room, error)
 }
 
 type roomRepository struct {
@@ -27,10 +26,4 @@ func (r *roomRepository) FindAll() ([]model.Room, error) {
 	var rooms []model.Room
 	err := r.db.Preload("CreatedBy").Find(&rooms).Error
 	return rooms, err
-}
-
-func (r *roomRepository) FindByID(id uint) (model.Room, error) {
-	var room model.Room
-	err := r.db.Preload("CreatedBy").First(&room, id).Error
-	return room, err
 }

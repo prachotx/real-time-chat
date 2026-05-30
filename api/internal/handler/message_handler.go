@@ -33,3 +33,14 @@ func (h *MessageHandler) Create(c fiber.Ctx) error {
 
 	return response.Send(c, fiber.StatusCreated, "Message created successfully", nil)
 }
+
+func (h *MessageHandler) FindByRoomID(c fiber.Ctx) error {
+	roomID, _ := strconv.Atoi(c.Params("id"))
+
+	messages, err := h.messageService.FindByRoomID(uint(roomID))
+	if err != nil {
+		return response.Send(c, fiber.StatusInternalServerError, "Failed to retrieve messages", nil)
+	}
+
+	return response.Send(c, fiber.StatusOK, "Messages retrieved successfully", messages)
+}

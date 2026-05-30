@@ -2,7 +2,6 @@ package handler
 
 import (
 	"errors"
-	"strconv"
 
 	"github.com/gofiber/fiber/v3"
 	"github.com/prachotx/real-time-chat/api/internal/dto"
@@ -47,18 +46,4 @@ func (h *RoomHandler) FindAll(c fiber.Ctx) error {
 	}
 
 	return response.Send(c, fiber.StatusOK, "Rooms retrieved successfully", rooms)
-}
-
-func (h *RoomHandler) FindByID(c fiber.Ctx) error {
-	id, _ := strconv.Atoi(c.Params("id"))
-
-	room, err := h.roomService.FindByID(uint(id))
-	if err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return response.Send(c, fiber.StatusNotFound, "Room not found", nil)
-		}
-		return response.Send(c, fiber.StatusInternalServerError, "Failed to retrieve room", nil)
-	}
-
-	return response.Send(c, fiber.StatusOK, "Room retrieved successfully", room)
 }

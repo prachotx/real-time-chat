@@ -71,8 +71,8 @@ func main() {
 		{
 			room.Post("/", middleware.AuthMiddleware, roomHandler.Create)
 			room.Get("/", middleware.AuthMiddleware, roomHandler.FindAll)
-			room.Get("/:id", middleware.AuthMiddleware, roomHandler.FindByID)
 			room.Post("/:id/messages", middleware.AuthMiddleware, messageHandler.Create)
+			room.Get("/:id/messages", middleware.AuthMiddleware, messageHandler.FindByRoomID)
 		}
 	}
 

@@ -9,7 +9,6 @@ import (
 type RoomService interface {
 	Create(input dto.CreateRoomDto, userID uint) error
 	FindAll() ([]dto.RoomResponse, error)
-	FindByID(id uint) (dto.RoomResponse, error)
 }
 
 type roomService struct {
@@ -49,21 +48,4 @@ func (s *roomService) FindAll() ([]dto.RoomResponse, error) {
 	}
 
 	return result, nil
-}
-
-func (s *roomService) FindByID(id uint) (dto.RoomResponse, error) {
-	room, err := s.roomRepo.FindByID(id)
-	if err != nil {
-		return dto.RoomResponse{}, err
-	}
-
-	return dto.RoomResponse{
-		ID:          room.ID,
-		Name:        room.Name,
-		CreatedByID: room.CreatedByID,
-		CreatedBy: dto.RoomUserResponse{
-			ID:       room.CreatedBy.ID,
-			Username: room.CreatedBy.Username,
-		},
-	}, nil
 }
